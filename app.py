@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import random
 import os
 import sys
+from copy import deepcopy
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.clock import Clock
@@ -29,6 +30,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.popup import Popup
 from kivy.uix.button import Button
 from kivy.uix.label import Label 
+from kivy.animation import Animation
 
 def resource_path(relative_path):
     """
@@ -89,6 +91,22 @@ class GameWindow(Screen):
         #self.tile_move_sound.volume = 0.2
         self.clear_widgets()
         self.init_game()
+
+    
+    def remove_anim_widget(self, anim, widget):
+        """
+        Called when an animation finishes
+        This function removes the animated widget from the screen
+        """
+        self.tile_moving.opacity = 0.8
+        self.remove_widget(widget)
+
+    def anim_in_progress(self, anim, widget, progress):
+        """
+        Called when animation is in progress
+        This function ensures the opacity of moving tile (not the animated) opacity is 0
+        """
+        self.tile_moving.opacity = 0
 
     def getInvCount(self, arr: list):
         """
@@ -173,6 +191,7 @@ class GameWindow(Screen):
                             if self.width > self.height else \
                             (x_pos[x] - self.width/8, y_pos[y] - self.width/8)
     def create_grid(self, start: bool=False, move: str=None):
+        before = None
         if start: # Start new game
             # Generate grid (3 x 3)
             while True:
@@ -196,6 +215,7 @@ class GameWindow(Screen):
                     self.btns[x][y].bind(on_press=self.btn_click)
                     self.add_widget(self.btns[x][y])
         else:
+            before = deepcopy(self.grid)
             self.grid = self.checker(self.grid, move)
             self.moves += 1
             
@@ -217,12 +237,43 @@ Moves: {self.moves}
                 self.manager.transition.direction = "left"
                 return
 
+        # Tile animation
+        print(self.grid)
+        if before is not None:
+            for y, row in enumerate(before):
+                for x, value in enumerate(row):
+                    if before[y][x] != self.grid[y][x] and self.grid[y][x] != -1:
+                        self.tile_moving = self.btns[y][x]
+                        ty = (self.grid[0]+self.grid[1]+self.grid[2]).index(-1) // 3
+                        tx = self.grid[ty].index(-1)
+                        print(tx, ty)
+                        temp_btn = Button(
+                            background_normal = resource_path(f"tiles/button{self.grid[y][x]}.png"),
+                            background_down = resource_path(f"tiles/button{self.grid[y][x]}.png"),
+                            opacity = 0.8,
+                            size_hint = self.btns[y][x].size_hint,
+                            pos = self.btns[ty][ty].pos
+                        )
+
+                        ty = (self.grid[0]+self.grid[1]+self.grid[2]).index(self.grid[y][x]) // 3
+                        tx = self.grid[ty].index(self.grid[y][x])
+
+                        self.add_widget(temp_btn)
+                        bx, by = self.btns[ty][tx].pos # tempy and tempx
+                        anim = Animation(x=bx, y=by, duration=0.2)
+                        anim.bind(
+                            on_progress = self.anim_in_progress,
+                            on_complete = self.remove_anim_widget
+                            )
+                        anim.start(temp_btn)
+
+        # Updating buttons
         for y, row in enumerate(self.btns):
             for x, item in enumerate(row):
                 item.background_normal = resource_path(f"tiles/button{self.grid[y][x]}.png")
                 item.background_down = resource_path(f"tiles/button{self.grid[y][x]}.png")
                 if [[1,2,3], [4,5,6], [7,8,-1]][y][x] == int(item.background_normal[-5]) or not tile_indication:
-                    item.opacity = 1 
+                    item.opacity = 1
                 else:
                     item.opacity = 0.8
                 if item.background_normal[-6:-4] == "-1": item.opacity = 0
