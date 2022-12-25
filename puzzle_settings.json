@@ -23,5 +23,19 @@
         "desc": "Toggle tile opacity when tiles are in correct position",
         "section": "Graphics",
         "key": "tile_indication"
+    },
+    {
+        "type": "options",
+        "title": "Tiles Movement",
+        "options": [
+            "0 (instant)",
+            "0.05",
+            "0.1",
+            "0.15 (recommended)",
+            "0.2"
+        ],
+        "desc": "Adjust tile movement speed",
+        "section": "Graphics",
+        "key": "tile_movement"
     }
 ]
