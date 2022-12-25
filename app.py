@@ -13,19 +13,19 @@ from kivy.uix.button import Button
 from kivy.uix.label import Label 
 
 def resource_path(relative_path):
-        """
-        PyInstaller creates a temp folder and stores path in _MEIPASS
-        This function tries to find that path 
+    """
+    PyInstaller creates a temp folder and stores path in _MEIPASS
+    This function tries to find that path 
 
-        Note: This function is for EXEs. Feel free to remove it when compiling it to APKs.
-        """
+    Note: This function is for EXEs. Feel free to remove it when compiling it to APKs.
+    """
 
-        try:
-            base_path = sys._MEIPASS
-        except Exception:
-            base_path = os.path.abspath(".")
+    try:
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
 
-        return os.path.join(base_path, relative_path)
+    return os.path.join(base_path, relative_path)
 
 inst = None
 sound_effects = None
