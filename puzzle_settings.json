@@ -1,0 +1,27 @@
+[
+    {
+        "type": "title",
+        "title": "Settings"
+    },
+    {
+        "type": "bool",
+        "title": "Music",
+        "desc": "Toggle music",
+        "section": "Audio",
+        "key": "music"
+    },
+    {
+        "type": "bool",
+        "title": "Sound Effects",
+        "desc": "Toggle sound effects",
+        "section": "Audio",
+        "key": "sound_effects"
+    },
+    {
+        "type": "bool",
+        "title": "Tiles Indication",
+        "desc": "Toggle tile opacity when tiles are in correct position",
+        "section": "Graphics",
+        "key": "tile_indication"
+    }
+]
