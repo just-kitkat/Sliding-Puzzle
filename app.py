@@ -48,8 +48,9 @@ def resource_path(relative_path):
     return os.path.join(base_path, relative_path)
 
 inst = None
-sound_effects = None
-tile_indication = None
+sound_effects = True
+tile_indication = True
+tile_movement = 0
 game_stats = None
 
 class WelcomeWindow(Screen):
@@ -75,6 +76,9 @@ class GameWindow(Screen):
     """
     This is the game screen.
     """
+
+    tile_moving = None
+
     def on_pre_enter(self):
         self.clear_widgets()
         width, _ = Window.size
@@ -98,7 +102,13 @@ class GameWindow(Screen):
         Called when an animation finishes
         This function removes the animated widget from the screen
         """
-        self.tile_moving.opacity = 0.8
+        item = self.tile_moving
+        y = (self.btns[0]+self.btns[1]+self.btns[2]).index(self.tile_moving) // 3
+        x = self.btns[y].index(self.tile_moving)
+        if [[1,2,3], [4,5,6], [7,8,-1]][y][x] == int(item.background_normal[-5]) or not tile_indication:
+            item.opacity = 1
+        else:
+            item.opacity = 0.8
         self.remove_widget(widget)
 
     def anim_in_progress(self, anim, widget, progress):
@@ -185,7 +195,6 @@ class GameWindow(Screen):
                 [self.height/2 - self.width/3.8, self.height/2, self.height/2 + self.width/3.8]
         for y, row in enumerate(self.btns[::-1]):
             for x, item in enumerate(row):
-                item.font_size = self.font_size
                 item.size = size
                 item.pos = (x_pos[x] - self.width/8, y_pos[y] - self.height/8) \
                             if self.width > self.height else \
@@ -238,7 +247,6 @@ Moves: {self.moves}
                 return
 
         # Tile animation
-        print(self.grid)
         if before is not None:
             for y, row in enumerate(before):
                 for x, value in enumerate(row):
@@ -246,13 +254,13 @@ Moves: {self.moves}
                         self.tile_moving = self.btns[y][x]
                         ty = (self.grid[0]+self.grid[1]+self.grid[2]).index(-1) // 3
                         tx = self.grid[ty].index(-1)
-                        print(tx, ty)
                         temp_btn = Button(
                             background_normal = resource_path(f"tiles/button{self.grid[y][x]}.png"),
                             background_down = resource_path(f"tiles/button{self.grid[y][x]}.png"),
-                            opacity = 0.8,
-                            size_hint = self.btns[y][x].size_hint,
-                            pos = self.btns[ty][ty].pos
+                            opacity = 0.8 if tile_indication else 1,
+                            size = self.btns[0][0].size,
+                            size_hint = self.btns[0][0].size_hint,
+                            pos = self.btns[ty][tx].pos
                         )
 
                         ty = (self.grid[0]+self.grid[1]+self.grid[2]).index(self.grid[y][x]) // 3
@@ -260,7 +268,7 @@ Moves: {self.moves}
 
                         self.add_widget(temp_btn)
                         bx, by = self.btns[ty][tx].pos # tempy and tempx
-                        anim = Animation(x=bx, y=by, duration=0.2)
+                        anim = Animation(x=bx, y=by, duration=tile_movement)
                         anim.bind(
                             on_progress = self.anim_in_progress,
                             on_complete = self.remove_anim_widget
@@ -272,12 +280,17 @@ Moves: {self.moves}
             for x, item in enumerate(row):
                 item.background_normal = resource_path(f"tiles/button{self.grid[y][x]}.png")
                 item.background_down = resource_path(f"tiles/button{self.grid[y][x]}.png")
-                if [[1,2,3], [4,5,6], [7,8,-1]][y][x] == int(item.background_normal[-5]) or not tile_indication:
-                    item.opacity = 1
+                if item != self.tile_moving and item.background_normal[-6:-4] != "-1":
+                    """
+                    Checks if the tile is the current moving one or the empty tile
+                    """
+                    if [[1,2,3], [4,5,6], [7,8,-1]][y][x] == int(item.background_normal[-5]) or not tile_indication:
+                        item.opacity = 1
+                    else:
+                        item.opacity = 0.8
                 else:
-                    item.opacity = 0.8
-                if item.background_normal[-6:-4] == "-1": item.opacity = 0
-                item.disabled = True if item.opacity == 0 else False
+                    item.opacity = 0
+                item.disabled = item.background_normal[-6:-4] == "-1" # disable button if button is empty tile
     
     def checker(self, puzzle: list, move: str):
         for i in range(3):
@@ -374,19 +387,22 @@ class PuzzleApp(App):
         
         global sound_effects
         global tile_indication
+        global tile_movement
         sound_effects = int(self.config.get("Audio", "sound_effects"))
         tile_indication = int(self.config.get("Graphics", "tile_indication"))
+        tile_movement = float(self.config.get("Graphics", "tile_movement").split(" ")[0])
 
     def build_config(self, config):
         config.setdefaults(
             "Audio", {
-                "music": 1,
+                "music": 0,
                 "sound_effects": 1,
             }
         )
         config.setdefaults(
             "Graphics", {
-                "tile_indication": 1
+                "tile_indication": 1,
+                "tile_movement": "0.15 (recommended)"
             }
         )
 
@@ -429,6 +445,9 @@ class PuzzleApp(App):
         if key == "tile_indication":
             global tile_indication
             tile_indication = int(value)
+        if key == "tile_movement":
+            global tile_movement
+            tile_movement = float(value.split(" ")[0])
         
     def play_song(self, *args):
         if self.music_state:
