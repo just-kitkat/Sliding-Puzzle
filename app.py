@@ -58,7 +58,17 @@ class WelcomeWindow(Screen):
     pass
 
 class InfoWindow(Screen):
-    pass
+
+    # Credits section. Wierd spacing makes text inline in the game itself :/
+    info_text = """
+                      Creator           kitkat3141
+                      Art                  Klaide9021
+                      Language         Python 3.10.5
+                      Main Code       616 Lines
+                      Music              @blueqmusic (yt)
+                      
+In the case of a bug, contact kitkat3141#0422 on discord.
+"""
 
 class WinWindow(Screen):
     def on_pre_enter(self, *args):
@@ -398,7 +408,7 @@ class PuzzleApp(App):
     def on_start(self):
         Window.update_viewport()
         self.title = "Sliding Puzzle by kitkat3141"
-        self.songs = ["elevate", "onceagain"]
+        self.songs = ["Suite Of Strings"]
         self.bg_songs = [SoundLoader.load(resource_path(f"music/{song}.wav")) for song in self.songs]
         self.current = 0
         for song in self.bg_songs:

@@ -109,7 +109,7 @@ WindowManager:
     name: "InfoWindow"
 
     Label:
-        text: "        This game was created by kitkat3141. \n        Art by Klaide9021 \n        Language: Python \n        Module used: Kivy 2.1.0 \n        Lines of code: 482 \n        Music by bensound.com \n\nIn the case of a bug, contact kitkat3141#0422 on discord."
+        text: root.info_text #"                This game was created by kitkat3141. \n                Art by Klaide9021 \n                Language: Python \n                Lines of code: 482 \n                Music: @blueqmusic (yt) \n\nIn the case of a bug, contact kitkat3141#0422 on discord."
         size_hint: 0.3, 0.3
         font_size: root.width//30 if root.width < root.height else root.height//40 + root.width//80
         pos_hint: {"center_x": 0.5, "center_y": 0.6}
