@@ -31,6 +31,7 @@ from kivy.uix.popup import Popup
 from kivy.uix.button import Button
 from kivy.uix.label import Label 
 from kivy.animation import Animation
+from kivy.graphics import Rectangle
 
 def resource_path(relative_path):
     """
@@ -150,6 +151,15 @@ class GameWindow(Screen):
         self.config = ConfigParser()
         self.moves = 0
         self.timer = 0
+
+        # Add frame to screen
+        self.puzzle_frame = Button(
+            background_normal = resource_path("bg/frame.png"),
+            background_down = resource_path("bg/frame.png"),
+            size_hint = (None, None)
+        )
+        self.add_widget(self.puzzle_frame)
+
         # Start Timer
         self.timer_btn = Button(
             text = "0.0s",
@@ -179,10 +189,14 @@ class GameWindow(Screen):
         self.create_grid(True)
 
     def timer_callback(self, dt):
+        """
+        A function to update the timer and game objects sizes (in case screen gets resized)
+        This ensures the tiles are squares and fit in the screen
+        """
         if self.moves > 0:
             self.timer += 0.1
             self.timer_btn.text = f"{round(self.timer, 1)}s"
-        self.width, _ = Window.size
+        self.width, self.height = Window.size
         self.font_size = self.width//20
         self.timer_btn.font_size = self.font_size//1.5
         self.quit_btn.font_size = self.font_size//2
@@ -199,6 +213,13 @@ class GameWindow(Screen):
                 item.pos = (x_pos[x] - self.width/8, y_pos[y] - self.height/8) \
                             if self.width > self.height else \
                             (x_pos[x] - self.width/8, y_pos[y] - self.width/8)
+                            
+        self.puzzle_frame.size = (size[0]*3.15, size[1]*3.15)
+        self.puzzle_frame.pos = (self.btns[2][0].pos[0], self.btns[2][0].pos[1])
+        """self.puzzle_frame.pos = (x_pos[0] - self.width/5.8, y_pos[0] - self.height/5.8) \
+                                if self.width > self.height else \
+                                (x_pos[0] - self.width/5.8, y_pos[0] - self.width/5.8)"""
+
     def create_grid(self, start: bool=False, move: str=None):
         before = None
         if start: # Start new game
@@ -213,11 +234,10 @@ class GameWindow(Screen):
                 for y, item in enumerate(row):
                     self.btns[x].append(
                         Button(
-                            font_size = self.font_size*1.25, 
                             size_hint = (None, None),
                             background_normal = resource_path(f"tiles/button{item}.png"), 
                             background_down = resource_path(f"tiles/button{item}.png"), 
-                            opacity = 0.8,
+                            opacity = 1,
                             disabled = not item > 0,
                             )
                         )
