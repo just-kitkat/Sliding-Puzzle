@@ -214,11 +214,13 @@ class GameWindow(Screen):
                             if self.width > self.height else \
                             (x_pos[x] - self.width/8, y_pos[y] - self.width/8)
                             
-        self.puzzle_frame.size = (size[0]*3.15, size[1]*3.15)
-        self.puzzle_frame.pos = (self.btns[2][0].pos[0], self.btns[2][0].pos[1])
-        """self.puzzle_frame.pos = (x_pos[0] - self.width/5.8, y_pos[0] - self.height/5.8) \
+        self.puzzle_frame.size = (size[0]*3.5, size[1]*3.5)
+        #self.puzzle_frame.pos = (self.btns[2][0].pos[0]+0.1*self.width, self.btns[2][0].pos[1]+0.1*self.width)
+
+        c = 0.05
+        self.puzzle_frame.pos = (self.btns[2][0].pos[0] - c*self.height, self.btns[2][0].pos[1] - c*self.height) \
                                 if self.width > self.height else \
-                                (x_pos[0] - self.width/5.8, y_pos[0] - self.width/5.8)"""
+                                (self.btns[2][0].pos[0] - c*self.width, self.btns[2][0].pos[1] - c*self.width)
 
     def create_grid(self, start: bool=False, move: str=None):
         before = None
