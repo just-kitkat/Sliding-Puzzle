@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import random
 import os
 import sys
+import asyncio, time
 from copy import deepcopy
 from kivy.app import App
 from kivy.lang import Builder
@@ -91,6 +92,9 @@ class GameWindow(Screen):
     tile_moving = None
 
     def on_pre_enter(self):
+        """
+        Clear all items on screen and display the loading label before the window shows
+        """
         self.clear_widgets()
         width, _ = Window.size
         loading = Label(
@@ -102,6 +106,9 @@ class GameWindow(Screen):
         self.add_widget(loading)
 
     def on_enter(self):
+        """
+        Once in game, load sound effects and clear all widgets (the loading label)
+        """
         self.tile_move_sound = SoundLoader.load(resource_path("sound_effects/tile_sliding.wav"))
         #self.tile_move_sound.volume = 0.2
         self.clear_widgets()
@@ -224,10 +231,9 @@ class GameWindow(Screen):
                             if self.width > self.height else \
                             (x_pos[x] - self.width/8, y_pos[y] - self.width/8)
                             
-        self.puzzle_frame.size = (size[0]*3.5, size[1]*3.5)
-        #self.puzzle_frame.pos = (self.btns[2][0].pos[0]+0.1*self.width, self.btns[2][0].pos[1]+0.1*self.width)
-
-        c = 0.05
+        # This adjusts the size of the frame "holding" the tiles
+        self.puzzle_frame.size = (size[0]*3.45, size[1]*3.45)
+        c = 0.045
         self.puzzle_frame.pos = (self.btns[2][0].pos[0] - c*self.height, self.btns[2][0].pos[1] - c*self.height) \
                                 if self.width > self.height else \
                                 (self.btns[2][0].pos[0] - c*self.width, self.btns[2][0].pos[1] - c*self.width)
@@ -263,20 +269,6 @@ class GameWindow(Screen):
             # Play tile moving sound effect
             if sound_effects:
                 self.tile_move_sound.play()
-
-            if self.grid == True:
-                # Win Game
-                global game_stats
-                global inst
-                game_stats = f"""
-You win!
-
-Time taken: {round(self.timer, 2)}s 
-Moves: {self.moves}
-"""
-                inst.root.current = "WinWindow"
-                self.manager.transition.direction = "left"
-                return
 
         # Tile animation
         if before is not None:
@@ -323,6 +315,21 @@ Moves: {self.moves}
                 else:
                     item.opacity = 0
                 item.disabled = item.background_normal[-6:-4] == "-1" # disable button if button is empty tile
+        
+        if self.check_win(self.grid):
+            def show_win_window(dt):
+                global inst
+                inst.root.current = "WinWindow"
+                self.manager.transition.direction = "left"
+            # Win Game
+            global game_stats
+            game_stats = f"""
+You win!
+
+Time taken: {round(self.timer, 2)}s 
+Moves: {self.moves}
+"""
+            Clock.schedule_once(show_win_window, 0.4)
     
     def checker(self, puzzle: list, move: str):
         for i in range(3):
@@ -348,11 +355,7 @@ Moves: {self.moves}
                     break
             except Exception as e:
                 pass
-        win = self.check_win(puzzle)
-        if win:
-            return win
-        else:
-            return puzzle
+        return puzzle
 
     def btn_click(self, instance):
         # instance.text
@@ -427,7 +430,7 @@ class PuzzleApp(App):
     def build_config(self, config):
         config.setdefaults(
             "Audio", {
-                "music": 0,
+                "music": 1,
                 "sound_effects": 1,
             }
         )
