@@ -62,11 +62,11 @@ class InfoWindow(Screen):
 
     # Credits section. Wierd spacing makes text inline in the game itself :/
     info_text = """
-                      Creator           kitkat3141
-                      Art                  Klaide9021
-                      Language         Python 3.10.5
-                      Main Code       616 Lines
-                      Music              @blueqmusic (yt)
+                      Creator                     kitkat3141
+                      Art                             Klaide9021
+                      Language                Python 3.10.5
+                      Main Code               616 Lines
+                      Music                        @blueqmusic (yt)
                       
 In the case of a bug, contact kitkat3141#0422 on discord.
 """
@@ -189,7 +189,7 @@ class GameWindow(Screen):
         # Quit button
         self.quit_btn = Button(
             text = "Quit",
-            font_size = self.font_size//2,
+            font_size = self.font_size//1.5,
             size_hint = (0.2, 0.1),
             pos_hint = {"center_x": 0.9, "bottom": 0.05}
         )
