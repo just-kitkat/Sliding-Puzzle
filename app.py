@@ -19,7 +19,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 import random
 import os
 import sys
-import asyncio, time
 from copy import deepcopy
 from kivy.app import App
 from kivy.lang import Builder
