@@ -64,7 +64,7 @@ class InfoWindow(Screen):
                       Creator                     kitkat3141
                       Art                             Klaide9021
                       Language                Python 3.10.5
-                      Main Code               616 Lines
+                      Main Code               627 Lines
                       Music                        @blueqmusic (yt)
                       
 In the case of a bug, contact kitkat3141#0422 on discord.
