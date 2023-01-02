@@ -410,8 +410,8 @@ class PuzzleApp(App):
     def on_start(self):
         Window.update_viewport()
         self.title = "Sliding Puzzle by kitkat3141"
-        self.songs = ["Suite Of Strings"]
-        self.bg_songs = [SoundLoader.load(resource_path(f"music/{song}.wav")) for song in self.songs]
+        self.songs = ["suiteofstrings"]
+        self.bg_songs = [SoundLoader.load(resource_path(f"music/{song}.mp3")) for song in self.songs]
         self.current = 0
         for song in self.bg_songs:
             song.bind(on_stop=self.play_song)
