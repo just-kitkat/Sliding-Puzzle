@@ -31,7 +31,6 @@ from kivy.uix.popup import Popup
 from kivy.uix.button import Button
 from kivy.uix.label import Label 
 from kivy.animation import Animation
-from kivy.graphics import Rectangle
 
 def resource_path(relative_path):
     """
