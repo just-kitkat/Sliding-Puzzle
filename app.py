@@ -58,7 +58,7 @@ class WelcomeWindow(Screen):
 
 class InfoWindow(Screen):
 
-    # Credits section. Wierd spacing makes text inline in the game itself :/
+    # Credits section. Wierd spacing makes text inline in the game itself :/ (will make it look better soon)
     info_text = """
                       Creator                     kitkat3141
                       Art                             Klaide9021
