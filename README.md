@@ -12,3 +12,9 @@ https://www.dropbox.com/sh/h9v9h1f6rw3ijb7/AACThgz0kIhu6RLOT7Pgdq56a?dl=0
 * Sound effects
 * Timer
 * Many customisable settings
+
+## Dependencies
+Run the following commands to install the dependencies.
+```
+pip install kivy
+```
