@@ -18,3 +18,7 @@ Run the following commands to install the dependencies.
 ```
 pip install kivy
 ```
+
+## To-Do
+* Auto solver
+* 2x2 and 4x4 grid
