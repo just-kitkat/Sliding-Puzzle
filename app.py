@@ -16,10 +16,12 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 """
 
+from utils.autosolver import solve
 import random
 import os
 import sys
 from copy import deepcopy
+import trio
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.clock import Clock
@@ -166,6 +168,7 @@ class GameWindow(Screen):
         self.config = ConfigParser()
         self.moves = 0
         self.timer = 0
+        self.autosolving = False
 
         # Add frame to screen
         self.puzzle_frame = Button(
@@ -183,6 +186,16 @@ class GameWindow(Screen):
             pos_hint = {"center_x": 0.9, "top": 0.98}
         )
         self.add_widget(self.timer_btn)
+
+        # Create Autosolver Button
+        self.autosolver_btn = Button(
+            text = "Find solution",
+            font_size = self.font_size//2.5,
+            size_hint = (0.12, 0.1),
+            pos_hint = {"center_x": 0.07, "top": 0.98}
+        )
+        self.autosolver_btn.bind(on_release=self.start_autosolver)
+        self.add_widget(self.autosolver_btn)
 
         # Quit button
         self.quit_btn = Button(
@@ -214,6 +227,7 @@ class GameWindow(Screen):
         self.width, self.height = Window.size
         self.font_size = self.width//20
         self.timer_btn.font_size = self.font_size//1.5
+        self.autosolver_btn.font_size = self.font_size//2.5
         self.quit_btn.font_size = self.font_size//2
         size = (self.height / 4, self.height / 4) if self.height < self.width else (self.width / 4, self.width / 4)
         x_pos = [self.width/2 - self.height/3.8, self.width/2, self.width/2 + self.height/3.8] \
@@ -355,12 +369,14 @@ Moves: {self.moves}
                 pass
         return puzzle
 
-    def btn_click(self, instance):
-        # instance.text
+    def btn_click(self, instance, autosolving=False):
+        if self.autosolving and not autosolving:
+            return
+        
         # Find Button from text
         for y in self.grid:
             for x in y:
-                if resource_path(f"tiles/button{x}.png") == instance.background_normal or (x == -1 and instance.opacity == 0):
+                if resource_path(f"tiles/button{x}.png") == instance.background_normal or (x == -1 and instance.opacity == 0): #NOTE: constant file access is slowing down code
                     pressed = self.grid.index(y), y.index(x)
 
         y, x = pressed
@@ -385,6 +401,43 @@ Moves: {self.moves}
         inst.root.current = "WelcomeWindow"
         self.manager.transition.direction = "right"
         self.init_game()
+    
+    def start_autosolver(self, *args):
+        """
+        Disable tiles, start BFS to find optimal solution and display it
+        """
+        self.autosolving = True
+        self.moves = 0
+        self.autosolver_btn.text = "Solving..."
+        inst.nursery.start_soon(self.autosolver)
+    
+    async def autosolver(self):
+        moves = solve(self.grid)[1][1:]
+        self.autosolver_btn.text = f"Solved [{len(moves)}]"
+
+        # Find empty tiles
+        for y, row in enumerate(self.grid):
+            for x, i in enumerate(row):
+                if i == -1:
+                    empty = x,y
+        x, y = empty
+
+        for move in moves:
+            await trio.sleep(0.2)
+            match move:
+                case "left":
+                    x -= 1
+                    self.btn_click(self.btns[y][x], True)
+                case "right":
+                    x += 1
+                    self.btn_click(self.btns[y][x], True)
+                case "up":
+                    y -= 1
+                    self.btn_click(self.btns[y][x], True)
+                case "down":
+                    y += 1
+                    self.btn_click(self.btns[y][x], True)
+
 
 class WindowManager(ScreenManager):
     pass
@@ -393,7 +446,10 @@ class WindowManager(ScreenManager):
 
 class PuzzleApp(App):
 
-    btn_sound = SoundLoader.load(resource_path("sound_effects/tile_sliding.wav"))
+    def __init__(self, nursery):
+        super().__init__()
+        self.nursery = nursery
+        self.btn_sound = SoundLoader.load(resource_path("sound_effects/tile_sliding.wav"))
     
     def resource_path(self, relative_path):
         """
@@ -496,7 +552,13 @@ class PuzzleApp(App):
         if sound_effects: 
             self.btn_sound.play()
 
+async def main():
+    global inst
+    async with trio.open_nursery() as nursery:
+        inst = PuzzleApp(nursery)
+        await inst.async_run(async_lib="trio")  # start app!
+        nursery.cancel_scope.cancel()
+
 if __name__ == "__main__":
     print("The game is starting! :D")
-    inst = PuzzleApp()
-    inst.run()
+    trio.run(main)
