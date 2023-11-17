@@ -402,11 +402,13 @@ Moves: {self.moves}
         self.autosolving = True
         self.moves = 0
         self.autosolver_btn.text = "Solving..."
+        logging.info("Starting autosolver")
         inst.nursery.start_soon(self.autosolver)
     
     async def autosolver(self):
         moves = solve(self.grid)[1][1:]
         self.autosolver_btn.text = f"Solved [{len(moves)}]"
+        logging.info(f"Optimal route found ({len(moves)} moves)")
 
         # Find empty tiles
         for y, row in enumerate(self.grid):
@@ -415,6 +417,7 @@ Moves: {self.moves}
                     empty = x,y
         x, y = empty
 
+        logging.info("Displaying solution")
         for move in moves:
             await trio.sleep(0.2)
             match move:
@@ -459,7 +462,9 @@ class PuzzleApp(App):
     def on_start(self):
         Window.update_viewport()
         self.title = "Sliding Puzzle by kitkat3141"
+        
         self.songs = ["suiteofstrings"]
+        logging.info("Loading songs")
         self.bg_songs = [SoundLoader.load(resource_path(f"music/{song}.mp3")) for song in self.songs]
         self.current = 0
         for song in self.bg_songs:
