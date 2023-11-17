@@ -86,7 +86,7 @@ class GameWindow(Screen):
         Clear all items on screen and display the loading label before the window shows
         """
         self.clear_widgets()
-        width, _ = Window.size
+        width = Window.size[0]
         loading = Label(
             text = "Loading...",
             font_size = width//20,
@@ -128,14 +128,14 @@ class GameWindow(Screen):
 
     def getInvCount(self, arr: list):
         """
-        Helper function for isSolvable(puzzle)
+        Helper function for is_solvable(puzzle)
         """
-        inv_count = 0
-        empty_value = -1
+        inv_count, empty_value = 0, -1
         for i in range(0, 9):
             for j in range(i + 1, 9):
                 if arr[j] != empty_value and arr[i] != empty_value and arr[i] > arr[j]:
                     inv_count += 1
+
         return inv_count
     
     def is_solvable(self, puzzle: list) -> bool:
@@ -144,8 +144,9 @@ class GameWindow(Screen):
         """
         # Count inversions in given 8 puzzle
         inv_count = self.getInvCount([j for sub in puzzle for j in sub])
+
         # return true if inversion count is even.
-        return (inv_count % 2 == 0)
+        return inv_count % 2 == 0
 
     def init_game(self, *args):
         """
@@ -153,9 +154,8 @@ class GameWindow(Screen):
         """
         self.width, self.height = Window.size
         self.font_size = self.width//20
-        self.grid = [[] for _ in range(3)]
-        self.btns = [[] for _ in range(3)]
-        self.config = ConfigParser()
+        self.grid = [[], [], []]
+        self.btns = [[], [], []]
         self.moves = 0
         self.timer = 0
         self.autosolving = False
@@ -214,11 +214,13 @@ class GameWindow(Screen):
         if self.moves > 0:
             self.timer += 0.1
             self.timer_btn.text = f"{round(self.timer, 1)}s"
+
         self.width, self.height = Window.size
         self.font_size = self.width//20
         self.timer_btn.font_size = self.font_size//1.5
         self.autosolver_btn.font_size = self.font_size//2.5
         self.quit_btn.font_size = self.font_size//2
+
         size = (self.height / 4, self.height / 4) if self.height < self.width else (self.width / 4, self.width / 4)
         x_pos = [self.width/2 - self.height/3.8, self.width/2, self.width/2 + self.height/3.8] \
                 if self.width > self.height else \
@@ -226,6 +228,7 @@ class GameWindow(Screen):
         y_pos = [self.height/2 - self.height/3.8, self.height/2, self.height/2 + self.height/3.8] \
                 if self.width > self.height else \
                 [self.height/2 - self.width/3.8, self.height/2, self.height/2 + self.width/3.8]
+        
         for y, row in enumerate(self.btns[::-1]):
             for x, item in enumerate(row):
                 item.size = size
@@ -267,6 +270,7 @@ class GameWindow(Screen):
                         )
                     self.btns[y][x].bind(on_press=self.btn_click)
                     self.add_widget(self.btns[y][x])
+
         else:
             before = deepcopy(self.grid)
             self.grid = self.checker(self.grid, move)
@@ -310,6 +314,7 @@ class GameWindow(Screen):
             for x, item in enumerate(row):
                 item.background_normal = resource_path(f"tiles/button{self.grid[y][x]}.png")
                 item.background_down = resource_path(f"tiles/button{self.grid[y][x]}.png")
+
                 if item != self.tile_moving and item.background_normal[-6:-4] != "-1":
                     """
                     Checks if the tile is the current moving one or the empty tile
@@ -318,15 +323,17 @@ class GameWindow(Screen):
                         item.opacity = 1
                     else:
                         item.opacity = 0.8
+
                 else:
                     item.opacity = 0
+
                 item.disabled = item.background_normal[-6:-4] == "-1" # disable button if button is empty tile
         
         if self.check_win(self.grid):
             def show_win_window(dt):
-                global inst
                 inst.root.current = "WinWindow"
                 self.manager.transition.direction = "left"
+
             # Win Game
             global game_stats
             game_stats = f"""
@@ -359,11 +366,16 @@ Moves: {self.moves}
                     puzzle[i][c] = puzzle[i][c+1]
                     puzzle[i][c+1] = -1
                     break
+
             except Exception as e:
                 pass
+
         return puzzle
 
     def btn_click(self, instance, autosolving=False):
+        """
+        Start tile movement when a tile is clicked
+        """
         if self.autosolving and not autosolving:
             return
         
@@ -391,7 +403,6 @@ Moves: {self.moves}
         return puzzle == [[1, 2, 3], [4, 5, 6], [7, 8, -1]]
 
     def quit_game(self, *args):
-        global inst
         inst.root.current = "WelcomeWindow"
         self.manager.transition.direction = "right"
     
@@ -420,6 +431,7 @@ Moves: {self.moves}
         logging.info("Displaying solution")
         for move in moves:
             await trio.sleep(0.2)
+
             match move:
                 case "left":
                     x -= 1
@@ -462,7 +474,7 @@ class PuzzleApp(App):
     def on_start(self):
         Window.update_viewport()
         self.title = "Sliding Puzzle by kitkat3141"
-        
+
         self.songs = ["suiteofstrings"]
         logging.info("Loading songs")
         self.bg_songs = [SoundLoader.load(resource_path(f"music/{song}.mp3")) for song in self.songs]
@@ -504,14 +516,17 @@ class PuzzleApp(App):
     def display_settings(self, settings):
         try:
             p = self.settings_popup
+
         except AttributeError:
             self.settings_popup = Popup(
                 content=settings,
                 title='Settings',
                 size_hint=(0.8, 0.8))
             p = self.settings_popup
+
         if p.content is not settings:
             p.content = settings
+
         p.background = resource_path("bg/bg.png")
         p.title_color = (0, 0, 0, 1)
         p.open()
@@ -520,6 +535,7 @@ class PuzzleApp(App):
         try:
             p = self.settings_popup
             p.dismiss()
+
         except AttributeError:
             pass # Settings popup doesn't exist
 
@@ -544,6 +560,7 @@ class PuzzleApp(App):
             else:
                 self.current += 1
             self.bg_songs[self.current].play()
+
         else:
             self.bg_songs[self.current].stop()
 
@@ -555,8 +572,9 @@ class PuzzleApp(App):
 async def main():
     global inst
     async with trio.open_nursery() as nursery:
+        # Start app
         inst = PuzzleApp(nursery)
-        await inst.async_run(async_lib="trio")  # start app!
+        await inst.async_run(async_lib="trio")
         nursery.cancel_scope.cancel()
 
 if __name__ == "__main__":
