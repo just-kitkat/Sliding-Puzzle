@@ -44,6 +44,7 @@ game_stats = None
 class WelcomeWindow(Screen):
     pass
 
+
 class InfoWindow(Screen):
 
     # Credits section. Wierd spacing makes text inline in the game itself :/ ( will be making it auto align soon :/ )
@@ -57,6 +58,7 @@ class InfoWindow(Screen):
 In the case of a bug, contact kitkat3141#0422 on discord.
 """
 
+
 class WinWindow(Screen):
     def on_pre_enter(self, *args):
         self.stats = Label(
@@ -69,6 +71,7 @@ class WinWindow(Screen):
     
     def on_leave(self):
         self.remove_widget(self.stats)
+
 
 class GameWindow(Screen):
     """
@@ -429,7 +432,7 @@ class WindowManager(ScreenManager):
     pass
 
 
-
+# APP
 class PuzzleApp(App):
 
     def __init__(self, nursery):
@@ -538,6 +541,7 @@ class PuzzleApp(App):
     def play_btn_sound(self):
         if sound_effects: 
             self.btn_sound.play()
+
 
 async def main():
     global inst
