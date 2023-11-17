@@ -543,12 +543,15 @@ class PuzzleApp(App):
         if key == "music": 
             self.music_state = int(value)
             self.play_song()
+
         if key == "sound_effects":
             global sound_effects
             sound_effects = int(value)
+
         if key == "tile_indication":
             global tile_indication
             tile_indication = int(value)
+            
         if key == "tile_movement":
             global tile_movement
             tile_movement = float(value.split(" ")[0])
