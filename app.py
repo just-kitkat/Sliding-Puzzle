@@ -34,6 +34,13 @@ from kivy.uix.button import Button
 from kivy.uix.label import Label 
 from kivy.animation import Animation
 
+RESOURCE_PATHS = {}
+inst = None
+sound_effects = True
+tile_indication = True
+tile_movement = 0
+game_stats = None
+
 def resource_path(relative_path):
     """
     PyInstaller creates a temp folder and stores path in _MEIPASS
@@ -41,19 +48,18 @@ def resource_path(relative_path):
 
     Note: This function is for EXEs. Feel free to remove it when compiling it to APKs.
     """
-
+    if relative_path in RESOURCE_PATHS:
+        return RESOURCE_PATHS[relative_path]
+    
     try:
         base_path = sys._MEIPASS
     except Exception:
         base_path = os.path.abspath(".")
 
-    return os.path.join(base_path, relative_path)
+    path = os.path.join(base_path, relative_path)
+    RESOURCE_PATHS[relative_path] = path # save in memory if not already in
+    return path
 
-inst = None
-sound_effects = True
-tile_indication = True
-tile_movement = 0
-game_stats = None
 
 class WelcomeWindow(Screen):
     pass
@@ -376,7 +382,7 @@ Moves: {self.moves}
         # Find Button from text
         for y in self.grid:
             for x in y:
-                if resource_path(f"tiles/button{x}.png") == instance.background_normal or (x == -1 and instance.opacity == 0): #NOTE: constant file access is slowing down code
+                if resource_path(f"tiles/button{x}.png") == instance.background_normal or (x == -1 and instance.opacity == 0):
                     pressed = self.grid.index(y), y.index(x)
 
         y, x = pressed
@@ -453,12 +459,36 @@ class PuzzleApp(App):
     
     def resource_path(self, relative_path):
         """
-        Same as the resource path above, but this is added so it can be accessed from the kv file.
+        Same as the resource_path function above, but this is added so it can be accessed from the kv file.
         """
         return resource_path(relative_path)
+    
+    def load_resources(self):
+        """
+        Load all the full file paths into memory
+        """
+        global RESOURCE_PATHS
+        files = [
+            "bg/bg.png",
+            "bg/frame.png",
+            "music/suiteofstrings.mp3",
+            "sound_effects/tile_sliding.wav",
+            "tiles/button_round.png",
+            "tiles/button1.png",
+            "tiles/button2.png",
+            "tiles/button3.png",
+            "tiles/button4.png",
+            "tiles/button5.png",
+            "tiles/button6.png",
+            "tiles/button7.png",
+            "tiles/button8.png",
+        ]
+        for file in files:
+            RESOURCE_PATHS[file] = resource_path(file)
 
     def build(self):
         self.use_kivy_settings = False
+        self.load_resources()
         kv = Builder.load_file(resource_path("slidingpuzzle.kv"))
         return kv
 
