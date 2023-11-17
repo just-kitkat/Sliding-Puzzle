@@ -421,9 +421,11 @@ Moves: {self.moves}
     
     async def autosolver(self):
         moves = solve(self.grid)[1][1:]
-        self.autosolver_btn.text = f"Solved [{len(moves)}]"
-        logging.info(f"Optimal route found ({len(moves)} moves)")
-
+        self.autosolver_btn.text = f"Solved [{len(moves)}]" if len(moves) > 0 else "No solution"
+        logging.info(f"Optimal route found ({len(moves)} moves)" if len(moves) > 0 else "No solution found")
+        if len(moves) == 0:
+            self.autosolving = False
+            return
         # Find empty tiles
         for y, row in enumerate(self.grid):
             for x, i in enumerate(row):
