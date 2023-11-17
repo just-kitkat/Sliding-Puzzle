@@ -69,9 +69,6 @@ class WinWindow(Screen):
             pos_hint = {"center_x": 0.5, "y": 0.6}
         )
         self.add_widget(self.stats)
-    
-    def on_leave(self):
-        self.remove_widget(self.stats)
 
 
 class GameWindow(Screen):
