@@ -20,6 +20,7 @@ from utils.autosolver import solve
 from utils.file_handler import resource_path, load_resources
 import random
 from copy import deepcopy
+import logging
 import trio
 from kivy.app import App
 from kivy.lang import Builder
@@ -137,7 +138,7 @@ class GameWindow(Screen):
                     inv_count += 1
         return inv_count
     
-    def isSolvable(self, puzzle: list) -> bool:
+    def is_solvable(self, puzzle: list) -> bool:
         """
         Returns True if the 8 puzzle is solvable and vice versa
         """
@@ -243,11 +244,15 @@ class GameWindow(Screen):
         before = None
         if start: # Start new game
             # Generate grid (3 x 3)
+            count = 1
             while True:
                 grid = random.sample([1, 2, 3, 4, 5, 6, 7, 8, -1], 9)
                 grid = [grid[:3], grid[3:6], grid[6:9]]
-                if self.isSolvable(grid):
+                if self.is_solvable(grid):
                     break
+                count += 1
+            logging.info(f"Generated puzzle in {count} tries")
+
             self.grid = grid
             for y, row in enumerate(grid):
                 for x, item in enumerate(row):
@@ -389,7 +394,6 @@ Moves: {self.moves}
         global inst
         inst.root.current = "WelcomeWindow"
         self.manager.transition.direction = "right"
-        self.init_game()
     
     def start_autosolver(self, *args):
         """
@@ -551,5 +555,5 @@ async def main():
         nursery.cancel_scope.cancel()
 
 if __name__ == "__main__":
-    print("The game is starting! :D")
+    logging.info("Starting...")
     trio.run(main)
