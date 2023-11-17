@@ -1,5 +1,5 @@
 """
-Copyright (C) 2022  kitkat3141
+Copyright (C) 2022  JustKitkat
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -50,13 +50,13 @@ class InfoWindow(Screen):
 
     # Credits section. Wierd spacing makes text inline in the game itself :/ ( will be making it auto align soon :/ )
     info_text = """
-                      Creator                     kitkat3141
+                      Creator                     JustKitkat
                       Art                             Klaide9021
                       Language                Python 3.10.5
                       Main Code               627 Lines
                       Music                        @blueqmusic (yt)
                       
-In the case of a bug, contact kitkat3141#0422 on discord.
+In the case of a bug, contact .justkitkat on discord.
 """
 
 
@@ -473,7 +473,7 @@ class PuzzleApp(App):
 
     def on_start(self):
         Window.update_viewport()
-        self.title = "Sliding Puzzle by kitkat3141"
+        self.title = "Sliding Puzzle by JustKitkat"
 
         self.songs = ["suiteofstrings"]
         logging.info("Loading songs")
@@ -551,7 +551,7 @@ class PuzzleApp(App):
         if key == "tile_indication":
             global tile_indication
             tile_indication = int(value)
-            
+
         if key == "tile_movement":
             global tile_movement
             tile_movement = float(value.split(" ")[0])
