@@ -260,9 +260,9 @@ class GameWindow(Screen):
                 if self.isSolvable(grid):
                     break
             self.grid = grid
-            for x, row in enumerate(grid):
-                for y, item in enumerate(row):
-                    self.btns[x].append(
+            for y, row in enumerate(grid):
+                for x, item in enumerate(row):
+                    self.btns[y].append(
                         Button(
                             size_hint = (None, None),
                             background_normal = resource_path(f"tiles/button{item}.png"), 
@@ -271,8 +271,8 @@ class GameWindow(Screen):
                             disabled = not item > 0,
                             )
                         )
-                    self.btns[x][y].bind(on_press=self.btn_click)
-                    self.add_widget(self.btns[x][y])
+                    self.btns[y][x].bind(on_press=self.btn_click)
+                    self.add_widget(self.btns[y][x])
         else:
             before = deepcopy(self.grid)
             self.grid = self.checker(self.grid, move)
