@@ -410,6 +410,9 @@ Moves: {self.moves}
         """
         Disable tiles, start BFS to find optimal solution and display it
         """
+        if self.autosolving:
+            return
+        
         self.autosolving = True
         self.moves = 0
         self.autosolver_btn.text = "Solving..."
