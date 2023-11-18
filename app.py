@@ -20,11 +20,11 @@ from utils.autosolver import solve
 from utils.file_handler import resource_path, load_resources
 import random
 from copy import deepcopy
-import logging
 import trio
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.clock import Clock
+from kivy.logger import Logger
 from kivy.config import ConfigParser
 from kivy.core.window import Window
 from kivy.core.audio import SoundLoader
@@ -254,7 +254,7 @@ class GameWindow(Screen):
                 if self.is_solvable(grid):
                     break
                 count += 1
-            logging.info(f"Generated puzzle in {count} tries")
+            Logger.info(f"Game: Generated puzzle in {count} tries")
 
             self.grid = grid
             for y, row in enumerate(grid):
@@ -416,13 +416,13 @@ Moves: {self.moves}
         self.autosolving = True
         self.moves = 0
         self.autosolver_btn.text = "Solving..."
-        logging.info("Starting autosolver")
+        Logger.info("Game: Starting autosolver")
         inst.nursery.start_soon(self.autosolver)
     
     async def autosolver(self):
         moves = solve(self.grid)[1][1:]
         self.autosolver_btn.text = f"Solved [{len(moves)}]" if len(moves) > 0 else "No solution"
-        logging.info(f"Optimal route found ({len(moves)} moves)" if len(moves) > 0 else "No solution found")
+        Logger.info(f"Game: Optimal route found ({len(moves)} moves)" if len(moves) > 0 else "No solution found")
         if len(moves) == 0:
             self.autosolving = False
             return
@@ -433,7 +433,7 @@ Moves: {self.moves}
                     empty = x,y
         x, y = empty
 
-        logging.info("Displaying solution")
+        Logger.info("Game: Displaying solution")
         for move in moves:
             await trio.sleep(0.2)
 
@@ -481,7 +481,7 @@ class PuzzleApp(App):
         self.title = "Sliding Puzzle by JustKitkat"
 
         self.songs = ["suiteofstrings"]
-        logging.info("Loading songs")
+        Logger.info("Game: Loading songs")
         self.bg_songs = [SoundLoader.load(resource_path(f"music/{song}.mp3")) for song in self.songs]
         self.current = 0
         for song in self.bg_songs:
@@ -586,5 +586,5 @@ async def main():
         nursery.cancel_scope.cancel()
 
 if __name__ == "__main__":
-    logging.info("Starting...")
+    Logger.info("Game: Starting...")
     trio.run(main)
