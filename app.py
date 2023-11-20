@@ -429,6 +429,7 @@ Moves: {self.moves}
         return puzzle == [[1, 2, 3], [4, 5, 6], [7, 8, -1]]
 
     def quit_game(self, *args):
+        self.autosolving = False
         inst.root.current = "WelcomeWindow"
         self.manager.transition.direction = "right"
     
@@ -462,7 +463,8 @@ Moves: {self.moves}
         Logger.info("Game: Displaying solution")
         for move in moves:
             await trio.sleep(0.2)
-
+            if not self.autosolving:
+                return
             match move:
                 case "left":
                     x -= 1
