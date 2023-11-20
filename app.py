@@ -18,6 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from utils.autosolver import solve
 from utils.file_handler import resource_path, load_resources
+from utils.constants import CREDITS
 import random
 from copy import deepcopy
 import trio
@@ -32,6 +33,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.popup import Popup
 from kivy.uix.button import Button
 from kivy.uix.label import Label 
+from kivy.uix.stacklayout import StackLayout
 from kivy.animation import Animation
 
 
@@ -48,16 +50,40 @@ class WelcomeWindow(Screen):
 
 class InfoWindow(Screen):
 
-    # Credits section. Wierd spacing makes text inline in the game itself :/ ( will be making it auto align soon :/ )
-    info_text = """
-                      Creator                     JustKitkat
-                      Art                             Klaide9021
-                      Language                Python 3.10.5
-                      Main Code               627 Lines
-                      Music                        @blueqmusic (yt)
-                      
-In the case of a bug, contact .justkitkat on discord.
-"""
+    info_text = "\n".join([f"{i}: {CREDITS[i]}" for i in CREDITS])
+
+    def on_pre_enter(self):
+        self.layout = StackLayout(padding=75, spacing=10)
+        self.text_info = []
+        
+        self.width, self.height = Window.size
+        for item in CREDITS:
+            text = Label(
+                text=f" {item}:\n | {CREDITS[item]}",
+                font_size=self.width//30 if self.width < self.height else self.height//40 + self.width//75,
+                size_hint=(0.5 if self.width < self.height else 0.33, 0.2),
+                halign="left",
+                valign="center",
+                #background_normal=resource_path("tiles/button_round.png")
+            )
+            text.text_size = text.size
+            self.text_info.append(text)
+            self.layout.add_widget(text)
+        self.add_widget(self.layout)
+
+    def on_enter(self):
+        self.clock = Clock.schedule_interval(self.resize, 0.1)
+
+    def resize(self, dt):
+        self.width, self.height = Window.size
+        for text in self.text_info:
+            text.font_size = self.width//20 if self.width < self.height else self.height//40 + self.width//75
+            text.size_hint = (0.5, 0.2) if self.height > self.width else (0.33, 0.33)
+            text.text_size = text.size
+        self.layout.padding = self.width//10, self.height//10, self.width//10, self.height//10 # left, up, right, down
+
+    def on_leave(self):
+        self.remove_widget(self.layout)
 
 
 class WinWindow(Screen):
