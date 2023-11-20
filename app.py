@@ -53,22 +53,21 @@ class InfoWindow(Screen):
     info_text = "\n".join([f"{i}: {CREDITS[i]}" for i in CREDITS])
 
     def on_pre_enter(self):
-        self.layout = StackLayout(padding=75, spacing=10)
+        self.width, self.height = Window.size
+        self.layout = StackLayout(padding=(self.width//10, self.height//10, self.width//10, self.height//10), spacing=10)
         self.text_info = []
         
-        self.width, self.height = Window.size
         for item in CREDITS:
             text = Label(
-                text=f" {item}:\n | {CREDITS[item]}",
-                font_size=self.width//30 if self.width < self.height else self.height//40 + self.width//75,
-                size_hint=(0.5 if self.width < self.height else 0.33, 0.2),
+                text=f"{item}:\n| {CREDITS[item]}",
+                font_size=self.width//20 if self.width < self.height else self.height//40 + self.width//75,
+                size_hint=(0.5, 0.2) if self.height > self.width else (0.33, 0.33),
                 halign="left",
-                valign="center",
-                #background_normal=resource_path("tiles/button_round.png")
+                valign="center"
             )
-            text.text_size = text.size
             self.text_info.append(text)
             self.layout.add_widget(text)
+            
         self.add_widget(self.layout)
 
     def on_enter(self):
