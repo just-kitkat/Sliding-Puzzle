@@ -46,49 +46,40 @@ WindowManager:
     name: "WelcomeWindow"
 
     Label:
-        font_size: root.width//10
-        size_hint: 0.3, 0.2
+        font_size: root.width//7 if root.width < root.height else root.height//6
+        size_hint: (0.3, 0.2)
         pos_hint: {"center_x": 0.5, "top": 0.9}
         text: "Sliding Puzzle"
     
     Label:
-        font_size: root.width//25
+        font_size: root.width//25 if root.width < root.height else root.height//25
         size_hint: 0.2, 0.1
-        pos_hint: {"center_x": 0.5, "top": 0.65}
+        pos_hint: {"center_x": 0.5, "top": 0.7}
         text: "By JustKitkat"
 
     NormButton:
-        size_hint: 0.35, 0.2
-        font_size: root.width//20
-        pos_hint: {"center_x": 0.25, "center_y": 0.4}
+        size_hint: (0.35, 0.15) if root.width > root.height else (0.35, 0.1)
+        font_size: root.width//14 if root.width < root.height else root.height//12
+        pos_hint: {"center_x": 0.5, "center_y": 0.4}
         background_normal: app.resource_path("tiles/button.png")
         background_down: app.resource_path("tiles/button.png")
-        text: "Start Game"
+        text: "Start"
         on_release:
             app.root.current = "GameWindow"
             root.manager.transition.direction = "left"
             #root.init_game()
 
     NormButton:
-        size_hint: 0.35, 0.2
-        font_size: root.width//20
-        pos_hint: {"center_x": 0.75, "center_y": 0.4}
-        text: "More Info"
+        size_hint: (0.35, 0.15) if root.width > root.height else (0.35, 0.1)
+        font_size: root.width//14 if root.width < root.height else root.height//12
+        pos_hint: {"center_x": 0.5, "center_y": 0.2}
+        text: "More"
         background_normal: app.resource_path("tiles/button.png")
         background_down: app.resource_path("tiles/button.png")
         on_release: 
             app.root.current = "InfoWindow"
             root.manager.transition.direction = "left"
     
-    NormButton:
-        size_hint: 0.35, 0.15
-        font_size: root.width//25
-        pos_hint: {"center_x": 0.5, "center_y": 0.15}
-        background_normal: app.resource_path("tiles/button.png")
-        background_down: app.resource_path("tiles/button.png")
-        text: "Settings"
-        on_release: 
-            app.open_settings()
 
 <GameWindow>:
     name: "GameWindow"
@@ -110,9 +101,17 @@ WindowManager:
 
     NormButton:
         size_hint: 0.25, 0.15
-        font_size: root.width//20 if root.width < root.height else root.height//10
-        pos_hint: {"center_x": 0.5, "y": 0.1}
+        font_size: root.width//16 if root.width < root.height else root.height//14
+        pos_hint: {"center_x": 0.75, "center_y": 0.1}
         text: "Back"
-        on_release: 
+        on_release:
             app.root.current = "WelcomeWindow"
             root.manager.transition.direction = "right"
+    
+    NormButton:
+        size_hint: 0.25, 0.15
+        font_size: root.width//16 if root.width < root.height else root.height//14
+        pos_hint: {"center_x": 0.25, "center_y": 0.1}
+        text: "Settings"
+        on_release:
+            app.open_settings()
