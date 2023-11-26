@@ -364,7 +364,7 @@ class GameWindow(Screen):
             game_stats = f"""
 {'You win' if not self.autosolving else 'Puzzle solved'}!
 
-Time taken: {f'{round(self.timer, 2)}s' if not self.autosolving else '-'}
+Time taken: {round(self.timer, 2)}s
 Moves: {self.moves}
 """
             Clock.schedule_once(show_win_window, 0.4)
