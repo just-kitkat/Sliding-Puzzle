@@ -214,10 +214,18 @@ class GameWindow(Screen):
 
         # Quit button
         self.quit_btn = Button(
-            text = "Quit",
             font_size = self.font_size//1.5,
-            size_hint = (0.2, 0.1),
-            pos_hint = {"center_x": 0.9, "bottom": 0.05}
+            size_hint = (None, None),
+            size = (
+                self.width//9 if self.width < self.height else self.height//12, 
+                self.width//9 if self.width < self.height else self.height//12
+                ),
+            pos = (
+                self.width - (self.width//7 if self.width < self.height else self.height//8), 
+                (self.width//80 if self.width < self.height else self.height//80)
+                ),
+            background_normal = "assets/btns/back.png",
+            background_down = resource_path("assets/btns/back.png")
         )
         self.quit_btn.bind(on_release=self.quit_game)
         self.add_widget(self.quit_btn)
@@ -244,7 +252,15 @@ class GameWindow(Screen):
         self.font_size = self.width//20
         self.timer_btn.font_size = self.font_size//1.5
         self.autosolver_btn.font_size = self.font_size//2.5
-        self.quit_btn.font_size = self.font_size//2
+
+        self.quit_btn.pos = (
+                self.width - (self.width//7 if self.width < self.height else self.height//6), 
+                self.width//85 if self.width < self.height else self.height//85
+                )
+        self.quit_btn.size = (
+                self.width//9 if self.width < self.height else self.height//8, 
+                self.width//9 if self.width < self.height else self.height//8
+                )
 
         size = (self.height / 4, self.height / 4) if self.height < self.width else (self.width / 4, self.width / 4)
         x_pos = [self.width/2 - self.height/3.8, self.width/2, self.width/2 + self.height/3.8] \
