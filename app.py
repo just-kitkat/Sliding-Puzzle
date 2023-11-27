@@ -18,7 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from utils.autosolver import solve
 from utils.file_handler import resource_path, load_resources
-from utils.constants import CREDITS
+from utils.constants import CREDITS, FRAME_SIZE_MULT
 import random
 from copy import deepcopy
 import trio
@@ -262,23 +262,25 @@ class GameWindow(Screen):
                 self.width//9 if self.width < self.height else self.height//8
                 )
 
-        size = (self.height / 4, self.height / 4) if self.height < self.width else (self.width / 4, self.width / 4)
-        x_pos = [self.width/2 - self.height/3.8, self.width/2, self.width/2 + self.height/3.8] \
+        size = self.height//FRAME_SIZE_MULT if self.height < self.width else self.width//FRAME_SIZE_MULT
+        # [btn1.pos, btn2.pos, btn3.pos]
+        x_pos = [self.width//2 - self.height//4.2, self.width//2, self.width//2 + self.height//4.2] \
                 if self.width > self.height else \
-                [self.width/2 - self.width/3.8, self.width/2, self.width/2 + self.width/3.8]
-        y_pos = [self.height/2 - self.height/3.8, self.height/2, self.height/2 + self.height/3.8] \
+                [self.width//2 - self.width//4.2, self.width//2, self.width//2 + self.width//4.2]
+        y_pos = [self.height//2 - self.height//4.2, self.height//2, self.height//2 + self.height//4.2] \
                 if self.width > self.height else \
-                [self.height/2 - self.width/3.8, self.height/2, self.height/2 + self.width/3.8]
+                [self.height//2 - self.width//4.2, self.height//2, self.height//2 + self.width//4.2]
         
         for y, row in enumerate(self.btns[::-1]):
             for x, item in enumerate(row):
-                item.size = size
+                item.size = size//3.38, size//3.38
+                # Gaps between tiles
                 item.pos = (x_pos[x] - self.width/8, y_pos[y] - self.height/8) \
                             if self.width > self.height else \
                             (x_pos[x] - self.width/8, y_pos[y] - self.width/8)
                             
         # This adjusts the size of the frame "holding" the tiles
-        self.puzzle_frame.size = (size[0]*3.45, size[1]*3.45)
+        self.puzzle_frame.size = size, size
         c = 0.045
         self.puzzle_frame.pos = (self.btns[2][0].pos[0] - c*self.height, self.btns[2][0].pos[1] - c*self.height) \
                                 if self.width > self.height else \

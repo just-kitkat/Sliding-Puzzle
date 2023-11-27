@@ -5,3 +5,6 @@ CREDITS = {
             "Main Code": "886 Lines",
             "Music": "@blueqmusic (yt)",
             }
+
+# Sizes
+FRAME_SIZE_MULT = 1.265
