@@ -46,19 +46,21 @@ def load_resources():
         Load all the full file paths into memory
         """
         files = [
-            "bg/bg.png",
-            "bg/frame.png",
+            "assets/bg/bg.png",
+            "assets/bg/frame.png",
             "music/suiteofstrings.mp3",
             "sound_effects/tile_sliding.wav",
-            "tiles/button_round.png",
-            "tiles/button1.png",
-            "tiles/button2.png",
-            "tiles/button3.png",
-            "tiles/button4.png",
-            "tiles/button5.png",
-            "tiles/button6.png",
-            "tiles/button7.png",
-            "tiles/button8.png",
+            "assets/tiles/button_round.png",
+            "assets/tiles/button1.png",
+            "assets/tiles/button2.png",
+            "assets/tiles/button3.png",
+            "assets/tiles/button4.png",
+            "assets/tiles/button5.png",
+            "assets/tiles/button6.png",
+            "assets/tiles/button7.png",
+            "assets/tiles/button8.png",
+            "assets/btns/back.png",
+            "assets/btns/settings.png"
         ]
         for file in files:
             RESOURCE_PATHS[file] = resource_path(file)
