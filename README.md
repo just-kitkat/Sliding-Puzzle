@@ -19,5 +19,8 @@ pip install kivy
 ```
 
 ## To-Do
-* Auto solver
+* ~~Auto solver~~
+* ~~Neater credits screen~~
+* ~~Use icons for info screen~~
 * 2x2 and 4x4 grid
+* In-app news updates using API
