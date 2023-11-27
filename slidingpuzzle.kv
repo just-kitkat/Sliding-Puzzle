@@ -100,18 +100,20 @@ WindowManager:
     name: "InfoWindow"
 
     NormButton:
-        size_hint: 0.25, 0.15
-        font_size: root.width//16 if root.width < root.height else root.height//14
-        pos_hint: {"center_x": 0.75, "center_y": 0.1}
-        text: "Back"
+        pos: root.width - (root.width//8 if root.width < root.height else root.height//8) - 10, 10
+        size_hint: None, None
+        size: root.width//8 if root.width < root.height else root.height//8, root.width//8 if root.width < root.height else root.height//8
+        background_normal: app.resource_path("tiles/back.png")
+        background_down: app.resource_path("tiles/back.png")
         on_release:
             app.root.current = "WelcomeWindow"
             root.manager.transition.direction = "right"
     
     NormButton:
-        size_hint: 0.25, 0.15
-        font_size: root.width//16 if root.width < root.height else root.height//14
-        pos_hint: {"center_x": 0.25, "center_y": 0.1}
-        text: "Settings"
+        pos: root.width - (root.width//8 if root.width < root.height else root.height//8), root.height - (root.width//8 if root.width < root.height else root.height//8)
+        size_hint: None, None
+        size: root.width//12 if root.width < root.height else root.height//12, root.width//12 if root.width < root.height else root.height//12
+        background_normal: app.resource_path("tiles/settings.png")
+        background_down: app.resource_path("tiles/settings.png")
         on_release:
             app.open_settings()
