@@ -187,8 +187,8 @@ class GameWindow(Screen):
 
         # Add frame to screen
         self.puzzle_frame = Button(
-            background_normal = resource_path("bg/frame.png"),
-            background_down = resource_path("bg/frame.png"),
+            background_normal = resource_path("assets/bg/frame.png"),
+            background_down = resource_path("assets/bg/frame.png"),
             size_hint = (None, None)
         )
         self.add_widget(self.puzzle_frame)
@@ -287,8 +287,8 @@ class GameWindow(Screen):
                     self.btns[y].append(
                         Button(
                             size_hint = (None, None),
-                            background_normal = resource_path(f"tiles/button{item}.png"), 
-                            background_down = resource_path(f"tiles/button{item}.png"), 
+                            background_normal = resource_path(f"assets/tiles/button{item}.png"), 
+                            background_down = resource_path(f"assets/tiles/button{item}.png"), 
                             opacity = 1,
                             disabled = not item > 0,
                             )
@@ -314,8 +314,8 @@ class GameWindow(Screen):
                         ty = (self.grid[0]+self.grid[1]+self.grid[2]).index(-1) // 3
                         tx = self.grid[ty].index(-1)
                         temp_btn = Button(
-                            background_normal = resource_path(f"tiles/button{self.grid[y][x]}.png"),
-                            background_down = resource_path(f"tiles/button{self.grid[y][x]}.png"),
+                            background_normal = resource_path(f"assets/tiles/button{self.grid[y][x]}.png"),
+                            background_down = resource_path(f"assets/tiles/button{self.grid[y][x]}.png"),
                             opacity = 0.8 if tile_indication else 1,
                             size = self.btns[0][0].size,
                             size_hint = self.btns[0][0].size_hint,
@@ -337,8 +337,8 @@ class GameWindow(Screen):
         # Updating buttons
         for y, row in enumerate(self.btns):
             for x, item in enumerate(row):
-                item.background_normal = resource_path(f"tiles/button{self.grid[y][x]}.png")
-                item.background_down = resource_path(f"tiles/button{self.grid[y][x]}.png")
+                item.background_normal = resource_path(f"assets/tiles/button{self.grid[y][x]}.png")
+                item.background_down = resource_path(f"assets/tiles/button{self.grid[y][x]}.png")
 
                 if item != self.tile_moving and item.background_normal[-6:-4] != "-1":
                     """
@@ -407,7 +407,7 @@ Moves: {self.moves}
         # Find Button from text
         for y in self.grid:
             for x in y:
-                if resource_path(f"tiles/button{x}.png") == instance.background_normal or (x == -1 and instance.opacity == 0):
+                if resource_path(f"assets/tiles/button{x}.png") == instance.background_normal or (x == -1 and instance.opacity == 0):
                     pressed = self.grid.index(y), y.index(x)
 
         y, x = pressed
@@ -559,7 +559,7 @@ class PuzzleApp(App):
         if p.content is not settings:
             p.content = settings
 
-        p.background = resource_path("bg/bg.png")
+        p.background = resource_path("assets/bg/bg.png")
         p.title_color = (0, 0, 0, 1)
         p.open()
 
