@@ -13,7 +13,7 @@ The game is under development and should be released soon!
 * Many customisable settings
 
 ## Dependencies
-Run the following commands to install the dependencies.
+Run the following commands to install the dependencies. (Outdated, will be updated soon)
 ```
 pip install kivy
 ```
