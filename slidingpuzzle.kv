@@ -100,9 +100,9 @@ WindowManager:
     name: "InfoWindow"
 
     NormButton:
-        pos: root.width - (root.width//8 if root.width < root.height else root.height//8) - 10, 10
+        pos: root.width - (root.width//7 if root.width < root.height else root.height//8), (root.width//80 if root.width < root.height else root.height//80)
         size_hint: None, None
-        size: root.width//8 if root.width < root.height else root.height//8, root.width//8 if root.width < root.height else root.height//8
+        size: root.width//9 if root.width < root.height else root.height//12, root.width//9 if root.width < root.height else root.height//12
         background_normal: app.resource_path("assets/btns/back.png")
         background_down: app.resource_path("assets/btns/back.png")
         on_release:
@@ -110,9 +110,9 @@ WindowManager:
             root.manager.transition.direction = "right"
     
     NormButton:
-        pos: root.width - (root.width//8 if root.width < root.height else root.height//8), root.height - (root.width//8 if root.width < root.height else root.height//8)
+        pos: root.width - (root.width//7 if root.width < root.height else root.height//8), root.height - (root.width//7 if root.width < root.height else root.height//8)
         size_hint: None, None
-        size: root.width//12 if root.width < root.height else root.height//12, root.width//12 if root.width < root.height else root.height//12
+        size: root.width//9 if root.width < root.height else root.height//12, root.width//9 if root.width < root.height else root.height//12
         background_normal: app.resource_path("assets/btns/settings.png")
         background_down: app.resource_path("assets/btns/settings.png")
         on_release:
