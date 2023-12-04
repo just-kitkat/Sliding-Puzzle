@@ -11,7 +11,7 @@ def get_news() -> str:
     Return announcements e.g. new updates/features
     """
     news = requests.get(get_route("news"))
-    return news.content
+    return news.text
 
 def join_game():
     """
@@ -22,7 +22,7 @@ def join_game():
 
 def get_latest_version():
     news = requests.get(get_route("latest_version"))
-    return news.content
+    return news.text
 
 def get_info():
     """

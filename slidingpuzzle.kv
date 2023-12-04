@@ -110,10 +110,19 @@ WindowManager:
             root.manager.transition.direction = "right"
     
     NormButton:
-        pos: root.width - (root.width//7 if root.width < root.height else root.height//6), root.height - (root.width//7 if root.width < root.height else root.height//6)
+        pos: root.width - (root.width//7 if root.width < root.height else root.height//8), root.height - (root.width//7 if root.width < root.height else root.height//8)
         size_hint: None, None
-        size: root.width//9 if root.width < root.height else root.height//8, root.width//9 if root.width < root.height else root.height//8
+        size: root.width//9 if root.width < root.height else root.height//11, root.width//9 if root.width < root.height else root.height//11
         background_normal: app.resource_path("assets/btns/settings.png")
         background_down: app.resource_path("assets/btns/settings.png")
         on_release:
             app.open_settings()
+
+    NormButton:
+        pos: root.width - (root.width//4 if root.width < root.height else root.height//4), root.height - (root.width//7 if root.width < root.height else root.height//8)
+        size_hint: None, None
+        size: root.width//9 if root.width < root.height else root.height//11, root.width//9 if root.width < root.height else root.height//11
+        background_normal: app.resource_path("assets/btns/news.png") if root.on_latest_version() else app.resource_path("assets/btns/news_notif.png")
+        background_down: app.resource_path("assets/btns/news.png") if root.on_latest_version() else app.resource_path("assets/btns/news_notif.png")
+        on_release:
+            root.open_news()

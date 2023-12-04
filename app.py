@@ -18,8 +18,8 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from utils.autosolver import solve
 from utils.file_handler import resource_path, load_resources
-from utils.constants import FRAME_SIZE_MULT
-from utils.api import get_info
+from utils.constants import FRAME_SIZE_MULT, VERSION
+from utils.api import get_info, get_latest_version
 import random
 from copy import deepcopy
 import trio
@@ -81,6 +81,12 @@ class InfoWindow(Screen):
 
     def on_leave(self):
         self.remove_widget(self.layout)
+    
+    def open_news(self):
+        Logger.info("Game: Opening news page")
+    
+    def on_latest_version(self):
+        return VERSION == get_latest_version()
 
 
 class WinWindow(Screen):
