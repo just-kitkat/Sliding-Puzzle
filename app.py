@@ -19,7 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from utils.autosolver import solve
 from utils.file_handler import resource_path, load_resources
 from utils.constants import FRAME_SIZE_MULT, VERSION
-from utils.api import get_info, get_latest_version
+from utils.api import get_info, get_latest_version, get_news
 import random
 from copy import deepcopy
 import trio
@@ -28,6 +28,7 @@ from kivy.lang import Builder
 from kivy.clock import Clock
 from kivy.logger import Logger
 from kivy.config import ConfigParser
+from kivy.factory import Factory
 from kivy.core.window import Window
 from kivy.core.audio import SoundLoader
 from kivy.uix.screenmanager import ScreenManager, Screen
@@ -48,6 +49,12 @@ game_stats = None
 class WelcomeWindow(Screen):
     pass
 
+
+class NewsLabel:
+    """
+    This is a placeholder to enable text wrapping in the news page
+    """
+    pass
 
 class InfoWindow(Screen):
     def on_pre_enter(self):
@@ -84,6 +91,19 @@ class InfoWindow(Screen):
     
     def open_news(self):
         Logger.info("Game: Opening news page")
+        Factory.register("NewsWidget", cls=NewsLabel)
+        content = Factory.NewsLabel(text="Loading news...", pos_hint={"y": 0.5}, size_hint=(1,0.01))
+        page = Popup(
+            title="News",
+            title_align="center",
+            title_color="black",
+            separator_color="brown",
+            content=content,
+            size_hint=(0.8, 0.8),
+            background=resource_path("assets/bg/bg.png")
+        )
+        page.open()
+        content.text=get_news()
     
     def on_latest_version(self):
         return VERSION == get_latest_version()
