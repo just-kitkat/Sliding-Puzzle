@@ -1,3 +1,5 @@
+VERSION = 1.0.0
+
 CREDITS = {
             "Dev": "JustKitkat",
             "Art": "Klaide9021",
