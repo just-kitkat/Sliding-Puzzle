@@ -54,8 +54,8 @@ class InfoWindow(Screen):
         self.width, self.height = Window.size
         self.layout = StackLayout(padding=(self.width//10, self.height//10, self.width//10, self.height//10), spacing=10)
         self.text_info = []
-        
-        for item in get_info():
+        CREDITS = get_info()
+        for item in CREDITS:
             text = Label(
                 text=f"{item}:\n| {CREDITS[item]}",
                 font_size=self.width//20 if self.width < self.height else self.height//40 + self.width//75,
