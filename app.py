@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from utils.autosolver import solve
 from utils.file_handler import resource_path, load_resources
 from utils.constants import CREDITS, FRAME_SIZE_MULT
+from utils.api import get_info
 import random
 from copy import deepcopy
 import trio
@@ -49,15 +50,12 @@ class WelcomeWindow(Screen):
 
 
 class InfoWindow(Screen):
-
-    info_text = "\n".join([f"{i}: {CREDITS[i]}" for i in CREDITS])
-
     def on_pre_enter(self):
         self.width, self.height = Window.size
         self.layout = StackLayout(padding=(self.width//10, self.height//10, self.width//10, self.height//10), spacing=10)
         self.text_info = []
         
-        for item in CREDITS:
+        for item in get_info():
             text = Label(
                 text=f"{item}:\n| {CREDITS[item]}",
                 font_size=self.width//20 if self.width < self.height else self.height//40 + self.width//75,
