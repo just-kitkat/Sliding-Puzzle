@@ -18,7 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from utils.autosolver import solve
 from utils.file_handler import resource_path, load_resources
-from utils.constants import CREDITS, FRAME_SIZE_MULT
+from utils.constants import FRAME_SIZE_MULT
 from utils.api import get_info
 import random
 from copy import deepcopy
