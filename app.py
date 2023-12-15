@@ -25,6 +25,7 @@ from utils.custom_labels import NewsLabel, WinLabel
 import random
 from copy import deepcopy
 import trio
+import time
 
 from kivy.app import App
 from kivy.lang import Builder
@@ -492,8 +493,9 @@ Moves: {self.moves}
         inst.nursery.start_soon(self.autosolver)
     
     async def autosolver(self):
+        start_time = time.time()
         moves = solve(self.grid)[1][1:]
-        self.autosolver_btn.text = f"Solved [{len(moves)}]" if len(moves) > 0 else "No solution"
+        self.autosolver_btn.text = f"Solved [{round(time.time() - start_time, 1)}s]" if len(moves) > 0 else "No solution"
         Logger.info(f"Game: Optimal route found ({len(moves)} moves)" if len(moves) > 0 else "No solution found")
         if len(moves) == 0:
             self.autosolving = False
