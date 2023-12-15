@@ -279,13 +279,13 @@ class GameWindow(Screen):
         self.width, self.height = Window.size
         self.font_size = self.width//20
 
-        self.timer_btn.font_size = self.font_size//1.5 if self.width > self.height else self.font_size
-        self.timer_btn.size_hint = (0.12, 0.1) if self.width > self.height else (0.18, 0.08)
-        self.timer_btn.pos_hint = {"center_x": 0.93, "top": 0.98} if self.width > self.height else {"center_x": 0.9, "top": 0.98}
+        self.timer_btn.font_size = self.font_size//1.8 if self.width > self.height else self.font_size
+        self.timer_btn.size_hint = (0.12, 0.1) if self.width > self.height else (0.2, 0.07)
+        self.timer_btn.pos_hint = {"center_x": 0.93, "top": 0.98} if self.width > self.height else {"center_x": 0.88, "top": 0.98}
 
-        self.autosolver_btn.font_size = self.font_size//2.5 if self.width > self.height else self.font_size//1.6
-        self.autosolver_btn.size_hint = (0.12, 0.1) if self.width > self.height else (0.18, 0.08)
-        self.autosolver_btn.pos_hint = {"center_x": 0.07, "top": 0.98} if self.width > self.height else {"center_x": 0.1, "top": 0.98}
+        self.autosolver_btn.font_size = self.font_size//2.5 if self.width > self.height else self.font_size//1.5
+        self.autosolver_btn.size_hint = (0.12, 0.1) if self.width > self.height else (0.2, 0.07)
+        self.autosolver_btn.pos_hint = {"center_x": 0.07, "top": 0.98} if self.width > self.height else {"center_x": 0.12, "top": 0.98}
 
         self.quit_btn.pos = (
                 self.width - (self.width//7 if self.width < self.height else self.height//6), 
