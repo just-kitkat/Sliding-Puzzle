@@ -30,6 +30,11 @@ WindowManager:
     text_size: self.width, None
     height: self.texture_size[1]
 
+<WinLabel@Label>:
+    font_size: root.height//3 if self.width > self.height else self.width//4.5
+    size_hint: (0.3, 0.2)
+    pos_hint: {"center_x": 0.5, "y": 0.6}
+
 <Button>:
     background_normal: app.resource_path("assets/tiles/button.png")
     background_down: app.resource_path("assets/tiles/button.png")
@@ -92,10 +97,11 @@ WindowManager:
     name: "WinWindow"
 
     Button:
-        text: "Play Again"
-        font_size: root.width//20
-        size_hint: (0.3, 0.2)
-        pos_hint: {"center_x": 0.5, "y": 0.2}
+        background_normal: app.resource_path("assets/btns/play_again.png")
+        background_down: app.resource_path("assets/btns/play_again.png")
+        pos: root.width - (root.width//8 if root.width < root.height else root.height//7), (root.width//70 if root.width < root.height else root.height//70)
+        size_hint: None, None
+        size: (root.width//9, root.width//9) if root.width < root.height else (root.height//8, root.height//8)
         on_release:
             app.root.current = "GameWindow"
             root.manager.transition.direction = "right"
