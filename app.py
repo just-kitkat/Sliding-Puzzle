@@ -140,13 +140,13 @@ class GameWindow(Screen):
             pos_hint = {"center_x": 0.5, "center_y": 0.5}
         )
         self.add_widget(loading)
+        self.tile_move_sound = SoundLoader.load(resource_path("sound_effects/tile_sliding.wav"))
 
     def on_enter(self):
         """
         Once in game, load sound effects and clear all widgets (the loading label)
         """
-        self.tile_move_sound = SoundLoader.load(resource_path("sound_effects/tile_sliding.wav"))
-        #self.tile_move_sound.volume = 0.2
+        #self.tile_move_sound.volume = 0.2 # Does not work with android (just throws an error like sound/volume is not defined)
         self.clear_widgets()
         self.init_game()
 
