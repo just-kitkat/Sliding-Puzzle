@@ -132,10 +132,10 @@ class GameWindow(Screen):
         Clear all items on screen and display the loading label before the window shows
         """
         self.clear_widgets()
-        width = Window.size[0]
+        width, height = Window.size
         loading = Label(
             text = "Loading...",
-            font_size = width//20,
+            font_size = height//20 if self.width > self.height else width//20,
             size_hint = (0.4, 0.3),
             pos_hint = {"center_x": 0.5, "center_y": 0.5}
         )
