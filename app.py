@@ -307,18 +307,20 @@ class GameWindow(Screen):
         
         for y, row in enumerate(self.btns[::-1]):
             for x, item in enumerate(row):
-                item.size = size//3.38, size//3.38
+                item_size = size//3.38
+                item.size = item_size, item_size
                 # Gaps between tiles
-                item.pos = (x_pos[x] - self.width/8, y_pos[y] - self.height/8) \
+                item.pos = (x_pos[x] - item_size//2, y_pos[y] - item_size//2) \
                             if self.width > self.height else \
-                            (x_pos[x] - self.width/8, y_pos[y] - self.width/8)
+                            (x_pos[x] - item_size//2, y_pos[y] - item_size//2)
                             
         # This adjusts the size of the frame "holding" the tiles
         self.puzzle_frame.size = size, size
         c = 0.045
         self.puzzle_frame.pos = (self.btns[2][0].pos[0] - c*self.height, self.btns[2][0].pos[1] - c*self.height) \
                                 if self.width > self.height else \
-                                (self.btns[2][0].pos[0] - c*self.width, self.btns[2][0].pos[1] - c*self.width)
+                                (self.btns[2][0].pos[0] - c*self.width, self.btns[2][0].pos[1] - c*self.width) #TODO: delete
+        self.puzzle_frame.pos_hint = {"center_x": 0.5, "center_y": 0.5}
 
     def create_grid(self, start: bool=False, move: str=None):
         before = None
