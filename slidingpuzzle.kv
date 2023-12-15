@@ -81,7 +81,7 @@ WindowManager:
     NormButton:
         size_hint: (0.35, 0.15) if root.width > root.height else (0.35, 0.1)
         font_size: root.width//14 if root.width < root.height else root.height//12
-        pos_hint: {"center_x": 0.5, "center_y": 0.2}
+        pos_hint: {"center_x": 0.5, "center_y": 0.2} if root.width > root.height else {"center_x": 0.5, "center_y": 0.28}
         text: "More"
         background_normal: app.resource_path("assets/tiles/button.png")
         background_down: app.resource_path("assets/tiles/button.png")
