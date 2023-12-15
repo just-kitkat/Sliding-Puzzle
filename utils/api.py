@@ -10,28 +10,41 @@ def get_news() -> str:
     """
     Return announcements e.g. new updates/features
     """
-    news = requests.get(get_route("news"))
-    return news.text
+    try:
+        news = requests.get(get_route("news"))
+        return news.text
+    except Exception:
+        return "News not available!\nAre you connected to the internet?"
 
 def join_game():
     """
     Called when user starts a game
     Used to track how many games are played each day
     """
-    requests.get(get_route("join_game"))
+    try:
+        requests.get(get_route("join_game"))
+    except Exception:
+        pass
 
 def get_latest_version():
-    news = requests.get(get_route("latest_version"))
-    return news.text
+    try:
+        news = requests.get(get_route("latest_version"))
+        return news.text
+    except Exception:
+        return None
 
 def get_info():
     """
     Gets the credits info and parses it into a dict
     """
-    info = requests.get(get_route("info"))
-    info = info.text
     data = {}
-    for i in info.split("\n"):
-        i = i.split(": ")
-        data[i[0]] = i[1]
+    try:
+        info = requests.get(get_route("info"))
+        info = info.text
+        for i in info.split("\n"):
+            i = i.split(": ")
+            data[i[0]] = i[1]
+    except Exception:
+        data = {"Error": "No internet connection"}
+
     return data

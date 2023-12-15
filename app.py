@@ -103,7 +103,8 @@ class InfoWindow(Screen):
         content.text=get_news()
     
     def on_latest_version(self):
-        return VERSION == get_latest_version()
+        latest_version = get_latest_version()
+        return VERSION == latest_version or latest_version is None
 
 
 class WinWindow(Screen):
