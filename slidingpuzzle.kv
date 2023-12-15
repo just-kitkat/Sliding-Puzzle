@@ -22,15 +22,13 @@ WindowManager:
     WinWindow:
     InfoWindow:
 
-<NewsLabel@Label>:
-    font_name: app.resource_path("fonts/Pangolin.ttf")
-    color: "000000"
-    text_size: self.width, None
-    height: self.texture_size[1]
-
 <Label>:
     font_name: app.resource_path("fonts/Pangolin.ttf")
     color: "000000"
+
+<NewsLabel@Label>:
+    text_size: self.width, None
+    height: self.texture_size[1]
 
 <Button>:
     background_normal: app.resource_path("assets/tiles/button.png")
