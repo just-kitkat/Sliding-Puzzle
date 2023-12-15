@@ -20,9 +20,12 @@ from utils.autosolver import solve
 from utils.file_handler import resource_path, load_resources
 from utils.constants import FRAME_SIZE_MULT, VERSION
 from utils.api import get_info, get_latest_version, get_news
+from utils.custom_labels import NewsLabel, WinLabel
+
 import random
 from copy import deepcopy
 import trio
+
 from kivy.app import App
 from kivy.lang import Builder
 from kivy.clock import Clock
@@ -49,18 +52,6 @@ game_stats = None
 class WelcomeWindow(Screen):
     pass
 
-
-class NewsLabel:
-    """
-    This is a placeholder to enable text wrapping in the news page
-    """
-    pass
-
-class WinLabel:
-    """
-    This is a placeholder to enable text sizing in the win screen
-    """
-    pass
 
 class InfoWindow(Screen):
     def on_pre_enter(self):
