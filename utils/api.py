@@ -1,3 +1,4 @@
+from utils.constants import INFO_REPLACE
 import requests
 
 def get_route(path: str) -> str:
@@ -43,7 +44,7 @@ def get_info():
         info = info.text
         for i in info.split("\n"):
             i = i.split(": ")
-            data[i[0]] = i[1]
+            data[i[0]] = i[1] if i[1] not in INFO_REPLACE else INFO_REPLACE[i[1]]
     except Exception:
         data = {"Error": "No internet connection"}
 
