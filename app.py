@@ -309,7 +309,7 @@ class GameWindow(Screen):
             for x, item in enumerate(row):
                 item_size = size//3.38
                 item.size = item_size, item_size
-                # Gaps between tiles
+                # pos = pos - size of tile
                 item.pos = (x_pos[x] - item_size//2, y_pos[y] - item_size//2) \
                             if self.width > self.height else \
                             (x_pos[x] - item_size//2, y_pos[y] - item_size//2)
