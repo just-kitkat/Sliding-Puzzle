@@ -555,7 +555,7 @@ class PuzzleApp(App):
         Window.update_viewport()
         self.title = "Sliding Puzzle by JustKitkat"
 
-        self.songs = ["suiteofstrings"]
+        self.songs = ["piano1"]
         Logger.info("Game: Loading songs")
         self.bg_songs = [SoundLoader.load(resource_path(f"music/{song}.mp3")) for song in self.songs]
         self.current = 0
