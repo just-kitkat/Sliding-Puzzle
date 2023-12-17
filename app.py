@@ -48,6 +48,7 @@ sound_effects = True
 tile_indication = True
 tile_movement = 0
 game_stats = None
+autosolver_count = 0
 
 
 class WelcomeWindow(Screen):
@@ -486,9 +487,12 @@ Moves: {self.moves}
         if self.autosolving:
             return
         
+        global autosolver_count
+        autosolver_count += 1
+
         self.autosolving = True
         self.moves = 0
-        self.autosolver_btn.text = "Solving..."
+        self.autosolver_btn.text = "Solving..." if autosolver_count < 5 else "Cheating..."
         Logger.info("Game: Starting autosolver")
         inst.nursery.start_soon(self.autosolver)
     
@@ -497,15 +501,16 @@ Moves: {self.moves}
         moves = solve(self.grid)[1][1:]
         self.autosolver_btn.text = f"Solved [{round(time.time() - start_time, 1)}s]" if len(moves) > 0 else "No solution"
         Logger.info(f"Game: Optimal route found ({len(moves)} moves)" if len(moves) > 0 else "No solution found")
+
         if len(moves) == 0:
             self.autosolving = False
             return
-        # Find empty tiles
+        
+        # Find empty tile (saves it to x, y)
         for y, row in enumerate(self.grid):
             for x, i in enumerate(row):
-                if i == -1:
-                    empty = x,y
-        x, y = empty
+                if i == -1: break
+            if i == -1: break
 
         Logger.info("Game: Displaying solution")
         for move in moves:
