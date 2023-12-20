@@ -587,7 +587,7 @@ class PuzzleApp(App):
         config.setdefaults(
             "Graphics", {
                 "tile_indication": 1,
-                "tile_movement": "0.15 (recommended)"
+                "tile_movement": "0.15"
             }
         )
 
