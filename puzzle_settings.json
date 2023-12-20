@@ -1,22 +1,29 @@
-[
+[   
+    {
+        "type": "bool",
+        "title": "",
+        "desc": "",
+        "section": "Audio",
+        "key": "sound_effects"
+    },
     {
         "type": "bool",
         "title": "Music",
-        "desc": "[size=11sp][color=444444]Toggle music",
+        "desc": "[size=11sp][color=222222]Toggle music",
         "section": "Audio",
         "key": "music"
     },
     {
         "type": "bool",
         "title": "Sound Effects",
-        "desc": "[size=11sp][color=444444]Toggle sound effects",
+        "desc": "[size=11sp][color=222222]Toggle sound effects",
         "section": "Audio",
         "key": "sound_effects"
     },
     {
         "type": "bool",
         "title": "Tiles Indication",
-        "desc": "[size=11sp][color=444444]Toggle tile opacity when tiles are in correct position",
+        "desc": "[size=11sp][color=222222]Toggle tile opacity when tiles are in correct position",
         "section": "Graphics",
         "key": "tile_indication"
     },
@@ -30,7 +37,7 @@
             "0.15",
             "0.2"
         ],
-        "desc": "[size=11sp][color=444444]Adjust tile movement speed",
+        "desc": "[size=11sp][color=222222]Adjust tile movement speed",
         "section": "Graphics",
         "key": "tile_movement"
     }
