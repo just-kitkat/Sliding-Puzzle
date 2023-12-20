@@ -612,12 +612,12 @@ class PuzzleApp(App):
             settings.children[0].children[0].children[0].children[0].children[-1].color = "white" # Make "Settings" title white
             
             # Bug fix: Hide the empty setting (used to fix a bug where the opacity of the first option is low)
-            settings.children[0].children[0].children[0].children[0].children[4].size_hint = (0,0)
-            settings.children[0].children[0].children[0].children[0].children[4].opacity = 0
+            settings.children[0].children[0].children[0].children[0].children[-2].size_hint = (0,0)
+            settings.children[0].children[0].children[0].children[0].children[-2].opacity = 0
 
             # Bug fix: The music option is somehow always darker so opacity is lowered to match other options
             settings.children[0].children[0].children[0].children[0].children[3].children[0].children[1].opacity=0.05
-            
+
             self.settings_popup = ModalView(
                 size_hint=(0.8, 0.8) if width < height else (0.6,0.8),
                 )
