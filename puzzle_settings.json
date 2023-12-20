@@ -1,9 +1,5 @@
 [
     {
-        "type": "title",
-        "title": "Settings"
-    },
-    {
         "type": "bool",
         "title": "Music",
         "desc": "[size=11sp][color=444444]Toggle music",
