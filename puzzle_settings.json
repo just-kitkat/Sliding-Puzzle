@@ -6,21 +6,21 @@
     {
         "type": "bool",
         "title": "Music",
-        "desc": "Toggle music",
+        "desc": "[size=11sp][color=444444]Toggle music",
         "section": "Audio",
         "key": "music"
     },
     {
         "type": "bool",
         "title": "Sound Effects",
-        "desc": "Toggle sound effects",
+        "desc": "[size=11sp][color=444444]Toggle sound effects",
         "section": "Audio",
         "key": "sound_effects"
     },
     {
         "type": "bool",
         "title": "Tiles Indication",
-        "desc": "Toggle tile opacity when tiles are in correct position",
+        "desc": "[size=11sp][color=444444]Toggle tile opacity when tiles are in correct position",
         "section": "Graphics",
         "key": "tile_indication"
     },
@@ -31,10 +31,10 @@
             "0 (instant)",
             "0.05",
             "0.1",
-            "0.15 (recommended)",
+            "0.15",
             "0.2"
         ],
-        "desc": "Adjust tile movement speed",
+        "desc": "[size=11sp][color=444444]Adjust tile movement speed",
         "section": "Graphics",
         "key": "tile_movement"
     }
