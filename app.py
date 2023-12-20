@@ -20,7 +20,7 @@ from utils.autosolver import solve
 from utils.file_handler import resource_path, load_resources
 from utils.constants import FRAME_SIZE_MULT, VERSION
 from utils.api import get_info, get_latest_version, get_news
-from utils.custom_labels import NewsLabel, WinLabel
+from utils.custom_labels import NewsLabel, WinLabel, NormButton, NormButtonNoSound
 
 import random
 from copy import deepcopy
@@ -40,6 +40,7 @@ from kivy.uix.popup import Popup
 from kivy.uix.button import Button
 from kivy.uix.label import Label 
 from kivy.uix.stacklayout import StackLayout
+from kivy.uix.modalview import ModalView
 from kivy.animation import Animation
 
 
@@ -216,7 +217,8 @@ class GameWindow(Screen):
         self.add_widget(self.puzzle_frame)
 
         # Start Timer
-        self.timer_btn = Button(
+        Factory.register("NormButtonNoSound", cls=NormButtonNoSound)
+        self.timer_btn = Factory.NormButtonNoSound(
             text = "0.0s",
             font_size = self.font_size//1.5,
             size_hint = (0.15, 0.1),
@@ -225,7 +227,8 @@ class GameWindow(Screen):
         self.add_widget(self.timer_btn)
 
         # Create Autosolver Button
-        self.autosolver_btn = Button(
+        Factory.register("NormButton", cls=NormButton)
+        self.autosolver_btn = Factory.NormButton(
             text = "Find solution",
             font_size = self.font_size//2.5,
             size_hint = (0.12, 0.1),
@@ -558,6 +561,7 @@ class PuzzleApp(App):
 
     def on_start(self):
         Window.update_viewport()
+        
         self.title = "Sliding Puzzle by JustKitkat"
 
         self.songs = ["piano1"]
@@ -599,21 +603,23 @@ class PuzzleApp(App):
         )
 
     def display_settings(self, settings):
+        settings.children[0].children[0].children[0].children[0].children[3].opacity=23
         try:
             p = self.settings_popup
-
+        
         except AttributeError:
-            self.settings_popup = Popup(
-                content=settings,
-                title='Settings',
-                size_hint=(0.8, 0.8))
+            width, height = Window.size
+            settings.children[0].children[0].children[0].children[0].children[-1].color = "white" # Make "Settings" title white
+            
+            self.settings_popup = ModalView(
+                size_hint=(0.8, 0.8) if width < height else (0.6,0.8),
+                )
+            self.settings_popup.add_widget(settings)
             p = self.settings_popup
 
-        if p.content is not settings:
-            p.content = settings
 
-        p.background = resource_path("assets/bg/bg.png")
-        p.title_color = (0, 0, 0, 1)
+        p.title_color = "white"
+        #p.background = resource_path("assets/bg/bg.png")
         p.open()
 
     def close_settings(self, *args):

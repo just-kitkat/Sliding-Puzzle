@@ -35,12 +35,6 @@ WindowManager:
     size_hint: (0.3, 0.2)
     pos_hint: {"center_x": 0.5, "y": 0.6}
 
-<Button>:
-    background_normal: app.resource_path("assets/tiles/button.png")
-    background_down: app.resource_path("assets/tiles/button.png")
-    color: "42291A"
-    border: 0, 0, 0, 0
-
 <FloatLayout>:
     canvas.before:
         Rectangle:
@@ -48,8 +42,15 @@ WindowManager:
             size: self.size
             pos: self.pos
             
+<Button>:
+    border: 0, 0, 0, 0
+    background_normal: app.resource_path("assets/tiles/button.png")
+    background_down: app.resource_path("assets/tiles/button.png")
+
 <NormButton@Button>:
     on_release: app.play_btn_sound()
+
+<NormButtonNoSound@Button>:
 
 <WelcomeWindow>:
     name: "WelcomeWindow"
@@ -96,7 +97,7 @@ WindowManager:
 <WinWindow>:
     name: "WinWindow"
 
-    Button:
+    NormButton:
         background_normal: app.resource_path("assets/btns/play_again.png")
         background_down: app.resource_path("assets/btns/play_again.png")
         pos: root.width - (root.width//8 if root.width < root.height else root.height//7), (root.width//70 if root.width < root.height else root.height//70)
