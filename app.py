@@ -207,6 +207,7 @@ class GameWindow(Screen):
         self.moves = 0
         self.timer = 0
         self.autosolving = False
+        self.timer_pressed = 0
 
         # Add frame to screen
         self.puzzle_frame = Button(
@@ -224,6 +225,7 @@ class GameWindow(Screen):
             size_hint = (0.15, 0.1),
             pos_hint = {"center_x": 0.9, "top": 0.98}
         )
+        self.timer_btn.bind(on_press=self.on_timer_pressed)
         self.add_widget(self.timer_btn)
 
         # Create Autosolver Button
@@ -482,6 +484,14 @@ Moves: {self.moves}
         self.autosolving = False
         inst.root.current = "WelcomeWindow"
         self.manager.transition.direction = "right"
+
+    def on_timer_pressed(self, *args):
+        self.timer_pressed += 1
+        if self.timer_pressed == 8:
+            inst.play_btn_sound()
+            self.timer += 100
+            self.timer_pressed = 0
+            self.timer_btn.text = f"{round(self.timer, 1)}s"
     
     def start_autosolver(self, *args):
         """
