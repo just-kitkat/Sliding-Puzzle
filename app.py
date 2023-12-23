@@ -19,7 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from utils.autosolver import solve
 from utils.file_handler import resource_path, load_resources
 from utils.constants import FRAME_SIZE_MULT, VERSION
-from utils.api import get_info, get_latest_version, get_news
+from utils.api import get_info, get_latest_version, get_news, join_game
 from utils.custom_labels import NewsLabel, WinLabel, NormButton, NormButtonNoSound
 
 import random
@@ -262,6 +262,9 @@ class GameWindow(Screen):
         except Exception:
             pass
         self.clock = Clock.schedule_interval(self.timer_callback, 0.1)
+
+        # Logs game start
+        join_game()
 
         # Starts the game
         self.create_grid(True)
