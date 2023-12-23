@@ -228,8 +228,9 @@ class GameWindow(Screen):
         self.timer_btn.bind(on_press=self.on_timer_pressed)
         self.add_widget(self.timer_btn)
 
-        # Create Autosolver Button
         Factory.register("NormButton", cls=NormButton)
+
+        # Create Autosolver Button
         self.autosolver_btn = Factory.NormButton(
             text = "Find solution",
             font_size = self.font_size//2.5,
@@ -240,7 +241,7 @@ class GameWindow(Screen):
         self.add_widget(self.autosolver_btn)
 
         # Quit button
-        self.quit_btn = Button(
+        self.quit_btn = Factory.NormButton(
             font_size = self.font_size//1.5,
             size_hint = (None, None),
             size = (
