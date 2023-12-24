@@ -252,7 +252,7 @@ class GameWindow(Screen):
                 self.width - (self.width//7 if self.width < self.height else self.height//8), 
                 (self.width//80 if self.width < self.height else self.height//80)
                 ),
-            background_normal = "assets/btns/back.png",
+            background_normal = resource_path("assets/btns/back.png"),
             background_down = resource_path("assets/btns/back.png")
         )
         self.quit_btn.bind(on_release=self.quit_game)
