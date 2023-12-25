@@ -48,7 +48,7 @@ def load_resources():
         files = [
             "assets/bg/bg.png",
             "assets/bg/frame.png",
-            "music/suiteofstrings.mp3",
+            "music/piano1.mp3",
             "sound_effects/tile_sliding.wav",
             "assets/tiles/button_round.png",
             "assets/tiles/button1.png",
@@ -61,6 +61,9 @@ def load_resources():
             "assets/tiles/button8.png",
             "assets/btns/back.png",
             "assets/btns/settings.png"
+            "assets/btns/news_notif.png"
+            "assets/btns/news.png"
+            "assets/btns/play_again.png"
         ]
         for file in files:
             RESOURCE_PATHS[file] = resource_path(file)
